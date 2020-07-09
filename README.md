@@ -1,8 +1,5 @@
 # QA-Finder
-A web app that returns Q&amp;A for a given amazon product.
-
-# Link
-https://noamkanonich.github.io/QA-Finder
+A web app using Node.js, cheerio, axios, request and more, that returns Q&amp;A for a given amazon product.
 
 # How to start
 1. Download/Fork the repository.
