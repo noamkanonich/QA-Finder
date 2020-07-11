@@ -11,3 +11,7 @@ A web app using Node.js, EJS, cheerio, axios, request and more, that returns Q&a
 
 # API Documentation
 https://documenter.getpostman.com/view/11995210/T17M86LU?version=latest
+
+# High Level Design
+
+
