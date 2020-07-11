@@ -14,14 +14,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
     
-  <script>
-    $(document).ready(function(){ 
-      $(form).on('submit', function(){ 
-        location.reload();
-  });
-})
-  </script>
   </head>
+
 <body>
     <header>
         <div class="navbar navbar-dark bg-dark shadow-sm">
@@ -86,8 +80,8 @@
 
           <% } else { %>
             <div class="container">
-              <% if(typeof imageUrl === "undefined") {%>
-                <h3 class="text-center">Something went wrong, search again please</h3>
+              <% if(questions.length === 0) {%>
+                <h3 class="text-center">This product has no Q&A, try another one.</h3>
               <% } %>
           <% } %>
 
