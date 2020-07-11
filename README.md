@@ -13,5 +13,5 @@ A web app using Node.js, EJS, cheerio, axios, request and more, that returns Q&a
 https://documenter.getpostman.com/view/11995210/T17M86LU?version=latest
 
 # High Level Design
-![High Level Components Design1](https://user-images.githubusercontent.com/55742997/87226707-451d0400-c39e-11ea-91ab-3de4c4f0396c.jpg)
+![High Level Components Design](https://user-images.githubusercontent.com/55742997/87226717-5bc35b00-c39e-11ea-8d68-a3a32d490ba2.jpg)
 
