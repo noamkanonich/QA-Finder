@@ -4,10 +4,10 @@ A web app using Node.js, EJS, cheerio, axios, request and more, that returns Q&a
 # How to start
 1. Download this repository zip file.
 2. Run npm.
-3. Type the following - "npm install" for installing all dependencies that require for using the web app.
-4. Open a browser and enter the following link  - "http://localhost:5000/.
-5. Insert the product asin code.
-6. Recieve Q&A for the product.
+3. Type the following - "npm install" to install all dependencies that are require for using this web app.
+4. Open your internet browser and enter the following link - "http://localhost:5000/.
+5. Insert an amazon product's asin code.
+6. Recieve the Q&A for the amazon product.
 
 # API Documentation
 https://documenter.getpostman.com/view/11995210/T17M86LU?version=latest
