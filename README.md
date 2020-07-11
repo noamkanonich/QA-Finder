@@ -9,16 +9,5 @@ A web app using Node.js, EJS, cheerio, axios, request and more, that returns Q&a
 5. Insert the product asin code.
 6. Recieve Q&A for the product.
 
-# APIs
-GET :
-1. http://localhost:5000/product/:asin 
-*-fdsfdsdfssdfdfs*
-2. http://localhost:5000/product/more/:asin
-*-fdsdffsddfs*
-
-POST :
-1. http://localhost:5000/product/:asin
-*-ddfsdsfdsdsfdsfdfs*
-2. http://localhost:5000/product/more/:asin 
-*-fdsdas*
-
+# API Documentation
+https://documenter.getpostman.com/view/11995210/T17M86LU?version=latest
