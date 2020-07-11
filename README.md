@@ -10,9 +10,8 @@ A web app using Node.js, EJS, cheerio, axios, request and more, that returns Q&a
 6. Recieve Q&A for the product.
 
 # APIs
-
 GET :
-1. http://localhost:5000/product/:asin '/n' 
+1. http://localhost:5000/product/:asin 
 *-fdsfdsdfssdfdfs*
 2. http://localhost:5000/product/more/:asin
 *-fdsdffsddfs*
@@ -21,5 +20,5 @@ POST :
 1. http://localhost:5000/product/:asin
 *-ddfsdsfdsdsfdsfdfs*
 2. http://localhost:5000/product/more/:asin 
-*- fdsdas
+*-fdsdas*
 
