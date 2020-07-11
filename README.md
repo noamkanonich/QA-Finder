@@ -8,7 +8,7 @@ A web app using Node.js, EJS, cheerio, axios, request and more, that returns Q&a
 4. Type "node app.js" to start the server.
 5. Open your internet browser and enter the following link - "http://localhost:5000/.
 6. Insert an amazon product's asin code.
-7. Recieve the Q&A for the amazon product.
+7. Receive the Q&A for the amazon product.
 
 # API Documentation
 https://documenter.getpostman.com/view/11995210/T17M86LU?version=latest
