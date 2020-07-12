@@ -1,5 +1,5 @@
 # QA-Finder
-A web app using Node.js, EJS, express, cheerio, axios, request and more, that returns Q&amp;A for a given amazon product.
+A web app using Node.js, EJS, express, cheerio, axios, request and more, that returns Q&amp;A for an amazon product, given the product's asin code.
 
 # How to start
 1. Download this repository zip file.
