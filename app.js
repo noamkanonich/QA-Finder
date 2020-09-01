@@ -26,12 +26,12 @@ const productSchema = new mongoose.Schema({
 const Product = mongoose.model("Product", productSchema);
 
 var pageNumber = 1;
-var startingProduct = new Product();
 var asinCode;
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
     Product.findOne({ asin: asinCode }, function (err, productFound) {
         if (productFound === null) {
+            var startingProduct = new Product();
             res.render("index",
                 {
                     questions: startingProduct.questions,
@@ -58,28 +58,25 @@ app.get("/", function(req, res) {
 })
 
 // Scraping Q&A for an Amazon product
-app.post("/", function(req, res) {
+app.post("/", function (req, res) {
     var product = new Product();
     asinCode = req.body.productAsin;
-    product.asin = asinCode;
-    url = "https://www.amazon.com/ask/questions/asin/" + product.asin;
-
-    let promises = [];
+    var url = "https://www.amazon.com/ask/questions/asin/" + asinCode;
     var newProduct = new Product();
-    promises.push(axios.get(url));
-    Promise.all(promises).then(function (results) {
-        results.forEach(async function (response) {
-            product = scrapeFunction(results[0]);
-            product.asin = asinCode;
+
+    async function scrape(){
+        await axios.get(url).then(response => {
+            product = scrapeFunction(response);
             newProduct = new Product({
-                asin: product.asin,
+                asin: asinCode,
                 name: product.name,
                 imageUrl: product.imageUrl,
                 questions: product.questions,
                 answers: product.answers
             });
-        });
-
+        }).catch(function(err) {
+           console.log(err);
+        })
         newProduct.save().then(function () {
             Product.find({}, function (err, foundProduct) {
                 if (err) {
@@ -90,34 +87,32 @@ app.post("/", function(req, res) {
                 }
             });
         })
-    })
-        .catch(function (err) {
-            console.log(err)
-        })
+    }
+    
+    scrape();
 })
 
 
 // Scraping more Q&A about the same Amazon product
-app.post("/more", function(req, res) {
+app.post("/more", function (req, res) {
     Product.findOne({ asin: asinCode }, function (err, productFound) {
         pageNumber++;
-        url = "https://www.amazon.com/ask/questions/asin/" + productFound.asin + "/" + pageNumber;
-
-        let promises = [];
+        var url = "https://www.amazon.com/ask/questions/asin/" + productFound.asin + "/" + pageNumber;
         var moreList = [];
-        promises.push(axios.get(url));
-        Promise.all(promises).then(function (results) {
-            results.forEach(async function (response) {
-                moreList = scrapeMoreQaFunction(results[0]);
+
+        async function scrape(){
+            await axios.get(url).then(response => {
+                moreList = scrapeMoreQaFunction(response);
                 moreList.questionsList.forEach(function (question) {
                     productFound.questions.push(question);
                 })
                 moreList.answersList.forEach(function (answer) {
                     productFound.answers.push(answer);
                 })
-            });
-
-            productFound.save().then(function () {
+            }).catch(function(err) {
+               console.log(err);
+            })
+               productFound.save().then(function () {
                 Product.find({}, function (err, foundProduct) {
                     if (err) {
                         console.log(err);
@@ -127,8 +122,9 @@ app.post("/more", function(req, res) {
                     }
                 });
             })
-        });
-    });
+        }
+        scrape();
+    });   
 });
 
 
@@ -136,7 +132,7 @@ app.post("/more", function(req, res) {
 //  <--- API --->
 
 app.route("/product/qa/:asin")
-    .get(function(req, res) {
+    .get(function (req, res) {
         Product.findOne({ asin: req.params.asin }, function (err, productFound) {
             if (productFound === null) {
                 res.send("There is no such product inside the database.")
@@ -148,13 +144,13 @@ app.route("/product/qa/:asin")
             }
         })
     })
-    .post(function(req, res) {
+    .post(function (req, res) {
         var product = new Product();
         asinCode = req.params.asin;
         product.asin = asinCode;
         url = "https://www.amazon.com/ask/questions/asin/" + product.asin;
         let promises = [];
-        var newProduct = new Product();
+        var newProduct = new Product();     
         promises.push(axios.get(url));
         Promise.all(promises).then(function (results) {
             results.forEach(async function (response) {
@@ -181,7 +177,7 @@ app.route("/product/qa/:asin")
             })
         })
     })
-    .delete(function(req, res){
+    .delete(function (req, res) {
         Product.deleteMany({}, function (err) {
             if (err) {
                 console.log(err)
@@ -195,18 +191,20 @@ app.route("/product/qa/:asin")
 
 
 app.route("/product/qa/more/:asin")
-    .get(function(req, res) {
+    .get(function (req, res) {
         Product.findOne({ asin: req.params.asin }, function (err, productFound) {
             res.send(productFound)
         })
     })
-    .post(function(req, res) {
+    .post(function (req, res) {
         Product.findOne({ asin: req.params.asin }, function (err, productFound) {
             pageNumber++;
             url = "https://www.amazon.com/ask/questions/asin/" + productFound.asin + "/" + pageNumber;
 
             let promises = [];
             var moreList = [];
+            
+
             promises.push(axios.get(url));
             Promise.all(promises).then(function (results) {
                 results.forEach(async function (response) {
@@ -232,7 +230,7 @@ app.route("/product/qa/more/:asin")
             });
         })
     })
-    .delete(function(req, res){
+    .delete(function (req, res) {
         Product.deleteMany({}, function (err) {
             if (err) {
                 console.log(err)
@@ -243,5 +241,10 @@ app.route("/product/qa/more/:asin")
 
 
 app.listen(5000, function () {
+    Product.deleteMany({}, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
     console.log("Server started on port 5000");
 })
