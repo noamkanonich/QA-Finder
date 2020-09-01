@@ -57,6 +57,7 @@ app.get("/", function(req, res) {
     })
 })
 
+// Scraping Q&A for an Amazon product
 app.post("/", function(req, res) {
     var product = new Product();
     asinCode = req.body.productAsin;
@@ -131,13 +132,14 @@ app.post("/more", function(req, res) {
 });
 
 
+
 //  <--- API --->
 
-app.route("/product/:asin")
-    .get(function (req, res) {
-        Product.findOne({ asin: asinCode }, function (err, productFound) {
+app.route("/product/qa/:asin")
+    .get(function(req, res) {
+        Product.findOne({ asin: req.params.asin }, function (err, productFound) {
             if (productFound === null) {
-                res.send("There is no such product in the database.")
+                res.send("There is no such product inside the database.")
                 console.log(productFound)
             }
 
@@ -146,9 +148,8 @@ app.route("/product/:asin")
             }
         })
     })
-    .post((req, res) => {
+    .post(function(req, res) {
         var product = new Product();
-        list = [];
         asinCode = req.params.asin;
         product.asin = asinCode;
         url = "https://www.amazon.com/ask/questions/asin/" + product.asin;
@@ -180,17 +181,27 @@ app.route("/product/:asin")
             })
         })
     })
+    .delete(function(req, res){
+        Product.deleteMany({}, function (err) {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                res.send("Products are successfully deleted.")
+            }
+        })
+    })
 
 
-app.route("/product/more/:asin")
-    .get(function (req, res) {
-        Product.findOne({ asin: asinCode }, function (err, productFound) {
+
+app.route("/product/qa/more/:asin")
+    .get(function(req, res) {
+        Product.findOne({ asin: req.params.asin }, function (err, productFound) {
             res.send(productFound)
         })
     })
-    .post((req, res) => {
-        Product.findOne({ asin: asinCode }, function (err, productFound) {
-            list = []
+    .post(function(req, res) {
+        Product.findOne({ asin: req.params.asin }, function (err, productFound) {
             pageNumber++;
             url = "https://www.amazon.com/ask/questions/asin/" + productFound.asin + "/" + pageNumber;
 
@@ -221,14 +232,16 @@ app.route("/product/more/:asin")
             });
         })
     })
-
+    .delete(function(req, res){
+        Product.deleteMany({}, function (err) {
+            if (err) {
+                console.log(err)
+            }
+            res.send("Products are successfully deleted.")
+        })
+    })
 
 
 app.listen(5000, function () {
-    Product.deleteMany({}, function (err) {
-        if (err) {
-            console.log(err)
-        }
-    })
     console.log("Server started on port 5000");
 })
